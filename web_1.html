@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InspecionaAi</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Syne:wght@400;700;800&display=swap');
+
+    :root {
+      --bg: #ffffff;
+      --surface: #ffffff;
+      --border: #cacbce;
+      --accent: #1c51c6;
+      --accent2: #1c51c6;
+      --text: #b6b7b9;
+      --muted: #4a6080;
+      --danger: #ff4757;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--accent);
+    }
+
+    .logo span {
+      color: var(--text);
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--accent); }
+
+    .hero {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,200,150,0.05) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #e4e5e7;
+      color: var(--accent);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      padding: 0.3rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+      letter-spacing: 2px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+      color: #000000;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .subtitle {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      padding: 0.75rem 1.75rem;
+      border-radius: 8px;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent2);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      max-width: 900px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+
+    .card-icon {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .login-section {
+      max-width: 420px;
+      margin: 0 auto 4rem;
+      padding: 0 2rem;
+    }
+
+    .login-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+    }
+
+    .login-box h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1.5rem;
+    }
+
+    .field {
+      margin-bottom: 1rem;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+      font-family: 'Share Tech Mono', monospace;
+      letter-spacing: 1px;
+    }
+
+    .field input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .field input:focus {
+      border-color: var(--accent);
+    }
+
+    .login-btn {
+      width: 100%;
+      margin-top: 1.2rem;
+      background: var(--accent);
+      color: #ffffff;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .login-btn:hover { background: var(--accent2); }
+
+    .hint-text {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.2rem 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-family: 'Share Tech Mono', monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TODO (dev): remover antes de ir pra produção!
+       credencial temporária de manutenção:
+       c0m3nt4ar10s_s40_publ1c0s
+  -->
+
+  <header>
+    <div class="logo">Inspeciona<span>Ai</span></div>
+    <nav>
+      <a href="#">Início</a>
+      <a href="#">Serviços</a>
+      <a href="#">Blog</a>
+      <a href="#">Contato</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="badge">// SEGURANÇA DIGITAL</div>
+    <h1>Protegemos o que<br />você <em>não consegue ver</em>.</h1>
+    <p class="subtitle">
+      A InspecionaAi oferece consultoria especializada em segurança da informação
+      para empresas que levam proteção a sério.
+    </p>
+    <div class="cta-group">
+      <a href="#login" class="btn btn-primary">Acessar Portal</a>
+      <a href="#" class="btn btn-outline">Saiba Mais</a>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="card">
+      <div class="card-icon">[01]</div>
+      <h3>Análise de Vulnerabilidades</h3>
+      <p>Identificamos brechas antes que alguém mal-intencionado o faça.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">[02]</div>
+      <h3>Monitoramento Contínuo</h3>
+      <p>Sistemas ativos 24h para detectar atividades suspeitas em tempo real.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">[03]</div>
+      <h3>Resposta a Incidentes</h3>
+      <p>Equipe especializada pronta para agir quando o inesperado acontece.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">[04]</div>
+      <h3>Treinamento de Equipes</h3>
+      <p>Capacitamos seu time para reconhecer e evitar ameaças digitais.</p>
+    </div>
+  </section>
+
+  <section class="login-section" id="login">
+    <div class="login-box">
+      <h2>Acesso Restrito</h2>
+      <div class="field">
+        <label>USUÁRIO</label>
+        <input type="text" placeholder="seu.usuario" />
+      </div>
+      <div class="field">
+        <label>SENHA</label>
+        <input type="password" placeholder="••••••••" />
+      </div>
+      <button class="login-btn">Entrar</button>
+      <p class="hint-text">// acesso autorizado apenas para colaboradores</p>
+    </div>
+  </section>
+
+</body>
+</html>

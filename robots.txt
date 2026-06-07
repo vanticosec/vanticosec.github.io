@@ -1,1 +1,6 @@
-teste
+User-agent: *
+Disallow: /admin/
+Disallow: /api/v1/
+Disallow: /uploads/
+Disallow: /backups/
+Disallow: /internal/segredo/r0bots_r3vel4m_r0t4s_s3ns1v31s

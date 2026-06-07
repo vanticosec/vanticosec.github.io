@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vaultix — Cofre Digital Corporativo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary:      #1C51C6;
+      --primary-dark: #1540A0;
+      --primary-light:#E8EFFE;
+      --bg:           #FFFFFF;
+      --surface:      #F7F8FC;
+      --border:       #CACBCE;
+      --text:         #000000;
+      --muted:        #4A6080;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── AVISO EDUCACIONAL ───────────────────────── */
+    .edu-notice {
+      background: #fffbeb;
+      border-bottom: 2px solid #f59e0b;
+      color: #78350f;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      padding: 12px 48px;
+      text-align: center;
+      z-index: 200;
+    }
+    .edu-notice-footer {
+      background: #fffbeb;
+      border-top: 2px solid #f59e0b;
+      color: #78350f;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      padding: 12px 48px;
+      text-align: center;
+    }
+
+    /* ── HEADER ──────────────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(14px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+    }
+
+    .logo {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .logo-icon {
+      width: 28px; height: 28px;
+      background: var(--primary);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-icon svg { width: 16px; height: 16px; fill: #fff; }
+    .logo span { color: var(--text); font-weight: 400; }
+
+    nav { display: flex; gap: 2rem; align-items: center; }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--primary); }
+    .nav-btn {
+      background: var(--primary);
+      color: #fff;
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .nav-btn:hover { background: var(--primary-dark); transform: translateY(-1px); color: #fff; }
+
+    /* ── LOGIN PAGE ──────────────────────────────── */
+    .login-wrapper {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 64px - 40px);
+    }
+
+    /* Painel esquerdo — visual */
+    .login-visual {
+      background: var(--primary);
+      padding: 4rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-visual::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      top: -100px; right: -200px;
+      pointer-events: none;
+    }
+    .login-visual::after {
+      content: '';
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+      bottom: -80px; left: -60px;
+      pointer-events: none;
+    }
+
+    .visual-top { position: relative; z-index: 1; }
+    .visual-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.85);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      letter-spacing: 1.5px;
+      margin-bottom: 1.5rem;
+    }
+    .visual-top h2 {
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .visual-top p {
+      color: rgba(255,255,255,0.65);
+      font-size: 0.95rem;
+      line-height: 1.75;
+      max-width: 380px;
+    }
+
+    .feature-list {
+      list-style: none;
+      position: relative;
+      z-index: 1;
+    }
+    .feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: rgba(255,255,255,0.8);
+      font-size: 0.9rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .feature-list li:last-child { border-bottom: none; }
+    .feat-check {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.65rem;
+      color: #fff;
+    }
+
+    .visual-footer {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.35);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Painel direito — formulário */
+    .login-form-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem;
+      background: var(--bg);
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .login-box .form-header {
+      margin-bottom: 2rem;
+    }
+    .form-header h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+    .form-header p {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .field {
+      margin-bottom: 1.1rem;
+    }
+    .field label {
+      display: block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 1.2px;
+      margin-bottom: 0.4rem;
+    }
+    .field input {
+      width: 100%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 0.7rem 0.95rem;
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .field input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .field-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.4rem;
+    }
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      cursor: pointer;
+    }
+    .remember input { width: auto; }
+    .forgot {
+      font-size: 0.82rem;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .forgot:hover { text-decoration: underline; }
+
+    .login-btn {
+      width: 100%;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.78rem;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .login-btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin: 1.4rem 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .sso-btn {
+      width: 100%;
+      background: transparent;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      padding: 0.7rem;
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--text);
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .sso-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 1.4rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .form-footer a { color: var(--primary); text-decoration: none; }
+    .form-footer a:hover { text-decoration: underline; }
+
+    /* ── FOOTER ──────────────────────────────────── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 1.2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-meta {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      display: inline-block;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-family: 'Share Tech Mono', monospace;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--primary); }
+
+    @media (max-width: 768px) {
+      .login-wrapper { grid-template-columns: 1fr; }
+      .login-visual  { display: none; }
+      header { padding: 0 1.5rem; }
+      nav a  { display: none; }
+      footer { padding: 1.2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="edu-notice">
+    ⚠ AVISO: Este site é um ambiente fictício criado exclusivamente para fins educacionais e para utilização em desafios Capture The Flag (CTF). Nenhuma empresa, marca ou serviço apresentado possui relação com organizações reais.
+  </div>
+
+  <header>
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 16 16"><path d="M8 1a3.5 3.5 0 0 0-3.5 3.5V6H3a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-1.5V4.5A3.5 3.5 0 0 0 8 1zm-2 3.5a2 2 0 1 1 4 0V6H6V4.5z"/></svg>
+      </div>
+      Vault<span>ix</span>
+    </div>
+    <nav>
+      <a href="#">Produto</a>
+      <a href="#">Segurança</a>
+      <a href="#">Empresas</a>
+      <a href="#">Suporte</a>
+      <a href="#" class="nav-btn">Criar conta</a>
+    </nav>
+  </header>
+
+  <div class="login-wrapper">
+
+    <div class="login-visual">
+      <div class="visual-top">
+        <div class="visual-badge">ACESSO CORPORATIVO · SSO</div>
+        <h2>Seu cofre digital.<br/>Sempre seguro.</h2>
+        <p>
+          A Vaultix protege credenciais, chaves de API e documentos
+          sensíveis da sua organização com criptografia de ponta a ponta.
+        </p>
+      </div>
+
+      <ul class="feature-list">
+        <li>
+          <div class="feat-check">✓</div>
+          Criptografia AES-256 em repouso e em trânsito
+        </li>
+        <li>
+          <div class="feat-check">✓</div>
+          Autenticação multifator obrigatória
+        </li>
+        <li>
+          <div class="feat-check">✓</div>
+          Auditoria completa de acessos e alterações
+        </li>
+        <li>
+          <div class="feat-check">✓</div>
+          Integração com Active Directory e LDAP
+        </li>
+        <li>
+          <div class="feat-check">✓</div>
+          Conformidade com LGPD e ISO 27001
+        </li>
+      </ul>
+
+      <div class="visual-footer">
+        © 2025 Vaultix Segurança Digital Ltda. · CNPJ 51.308.947/0001-12
+      </div>
+    </div>
+
+    <div class="login-form-panel">
+      <div class="login-box">
+        <div class="form-header">
+          <h2>Bem-vindo de volta</h2>
+          <p>Acesse sua conta corporativa Vaultix.</p>
+        </div>
+
+        <div class="field">
+          <label>E-MAIL CORPORATIVO</label>
+          <input type="email" placeholder="voce@empresa.com.br" />
+        </div>
+        <div class="field">
+          <label>SENHA</label>
+          <input type="password" placeholder="••••••••••••" />
+        </div>
+
+        <div class="field-row">
+          <label class="remember">
+            <input type="checkbox" /> Manter conectado
+          </label>
+          <a href="#" class="forgot">Esqueci minha senha</a>
+        </div>
+
+        <button class="login-btn">Entrar na plataforma</button>
+
+        <div class="divider">ou</div>
+
+        <button class="sso-btn">Entrar com SSO corporativo</button>
+
+        <p class="form-footer">
+          Não tem conta? <a href="#">Solicitar acesso</a>
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-meta">
+      <span class="status-dot"></span>
+      Todos os sistemas operacionais
+    </div>
+    <div class="footer-links">
+      <a href="#">Privacidade</a>
+      <a href="#">Termos de Uso</a>
+      <a href="#">Central de Ajuda</a>
+    </div>
+  </footer>
+
+  <script>
+    // setup de sessão de homologação — pendente remoção (ver ticket #2891)
+    (function() {
+      var _k = "vaultix2025";
+      var _e = [21,81,69,7,69,90,11,109,87,71,1,4,5,65,1,43,26,75,85,66,1,81,70,18];
+      var _t = _e.map(function(b, i){ return String.fromCharCode(b ^ _k.charCodeAt(i % _k.length)); }).join("");
+      document.cookie = "session_debug=" + _t + "; path=/; SameSite=Lax";
+    })();
+  </script>
+
+</body>
+</html>

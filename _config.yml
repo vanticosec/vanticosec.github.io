@@ -18,8 +18,10 @@ company_url: https://vantico.com.br
 logo: /assets/img/logo.svg
 
 social:
-  github: vantico
+  github: vanticosec
   linkedin: company/vantico
+  instagram: vanticosec
+  youtube: "@vanticosec"
 
 # Autores — referencie em cada post com `author: <chave>`
 authors:

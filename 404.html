@@ -1,5 +1,10 @@
 ---
-title: Página não encontrada
+title: "404"
 permalink: /404.html
 ---
-<p>Não encontramos essa página. <a href="{{ '/' | relative_url }}">Voltar para os artigos →</a></p>
+<div class="term-404">
+<pre><span class="p">$</span> curl -I {{ site.url }}<span class="js-path">/…</span>
+HTTP/2 <span class="err">404 Not Found</span>
+<span class="p">$</span> <span class="cursor"></span></pre>
+</div>
+<p>Essa página não existe (ou foi bem escondida). <a href="{{ '/' | relative_url }}">Voltar para os artigos →</a></p>

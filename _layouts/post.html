@@ -6,20 +6,23 @@ layout: default
 <div class="progress" aria-hidden="true"><span></span></div>
 
 <article class="post">
-  <header class="post-header container narrow">
-    <a class="back" href="{{ '/' | relative_url }}">← Todos os artigos</a>
-    {% if page.category %}<span class="kicker">{{ page.category }}</span>{% endif %}
-    <h1>{{ page.title }}</h1>
-    {% if page.description %}<p class="lead">{{ page.description }}</p>{% endif %}
-    <div class="byline">
-      <div class="avatar">{{ a.name | default: page.author | slice: 0 }}</div>
-      <div>
-        <strong>{{ a.name | default: page.author }}</strong>
-        <div class="meta">
-          {% if a.role %}<span>{{ a.role }}</span><span>·</span>{% endif %}
-          <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%d/%m/%Y' }}</time>
-          <span>·</span>
-          <span>{{ words | divided_by: 200 | plus: 1 }} min de leitura</span>
+  <header class="post-header">
+    <div class="grid-bg" aria-hidden="true"></div>
+    <div class="glow" aria-hidden="true"></div>
+    <div class="container narrow">
+      <a class="back" href="{{ '/' | relative_url }}">cd ../artigos</a>
+      <div class="meta">
+        {% if page.category %}<span class="kicker">{{ page.category }}</span>{% endif %}
+        <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%d.%m.%Y' }}</time>
+        <span>{{ words | divided_by: 200 | plus: 1 }} min de leitura</span>
+      </div>
+      <h1>{{ page.title }}</h1>
+      {% if page.description %}<p class="lead">{{ page.description }}</p>{% endif %}
+      <div class="byline">
+        <div class="avatar">{{ a.name | default: page.author | slice: 0 }}</div>
+        <div>
+          <strong>{{ a.name | default: page.author }}</strong>
+          {% if a.role %}<div class="muted">{{ a.role }}</div>{% endif %}
         </div>
       </div>
     </div>
@@ -27,7 +30,7 @@ layout: default
 
   <div class="container post-layout">
     <aside class="toc" aria-label="Sumário">
-      <p class="toc-title">Neste artigo</p>
+      <p class="label">// neste artigo</p>
       <nav id="toc"></nav>
     </aside>
     <div class="prose">
@@ -38,8 +41,8 @@ layout: default
       {% endif %}
 
       <nav class="post-nav">
-        {% if page.previous %}<a class="prev" href="{{ page.previous.url | relative_url }}"><small>← Anterior</small>{{ page.previous.title }}</a>{% else %}<span></span>{% endif %}
-        {% if page.next %}<a class="next" href="{{ page.next.url | relative_url }}"><small>Próximo →</small>{{ page.next.title }}</a>{% endif %}
+        {% if page.previous %}<a class="prev" href="{{ page.previous.url | relative_url }}"><small>← anterior</small>{{ page.previous.title }}</a>{% else %}<span></span>{% endif %}
+        {% if page.next %}<a class="next" href="{{ page.next.url | relative_url }}"><small>próximo →</small>{{ page.next.title }}</a>{% endif %}
       </nav>
     </div>
   </div>

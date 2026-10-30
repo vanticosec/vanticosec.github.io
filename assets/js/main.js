@@ -15,10 +15,14 @@
     chip.addEventListener('click', function () {
       var f = chip.dataset.filter;
       chips.forEach(function (c) { c.classList.toggle('active', c === chip); });
-      document.querySelectorAll('.grid .card').forEach(function (card) {
-        var tags = (card.dataset.tags || '').split(' ');
-        card.hidden = f !== '*' && tags.indexOf(f) === -1;
+      var visible = 0;
+      document.querySelectorAll('.list .row').forEach(function (row) {
+        var tags = (row.dataset.tags || '').split(' ');
+        row.hidden = f !== '*' && tags.indexOf(f) === -1;
+        if (!row.hidden) visible++;
       });
+      var empty = document.querySelector('.list .empty');
+      if (empty) empty.hidden = visible > 0;
     });
   });
 

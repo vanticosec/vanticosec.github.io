@@ -46,6 +46,12 @@ O site é publicado em https://vanticosec.github.io a partir do repositório
 
 ## Personalizar o visual
 
+Identidade da Vantico: azul `#2B6BE6`/`#1C51C6`, fonte Satoshi (títulos/texto) e
+JetBrains Mono (rótulos e código). O tema escuro é o padrão; o botão no topo alterna
+para o claro.
+
 Cores, fontes e espaçamentos ficam nas variáveis do topo de `assets/css/main.css`
-(`--accent`, `--bg`, `--text`…), com um bloco para o tema claro e outro para o escuro.
-Troque `assets/img/logo.svg` pelo logo oficial.
+(`--brand`, `--accent`, `--bg`, `--text`…), com um bloco para cada tema.
+O logo (`assets/img/logo.svg`) é o "V" do site da Vantico.
+
+Callouts nos posts: `> texto` seguido de `{: .note }`, `{: .tip }` ou `{: .warning }`.

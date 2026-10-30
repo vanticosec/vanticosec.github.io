@@ -3,12 +3,13 @@ title: Tags
 permalink: /tags/
 ---
 {% assign tags = site.tags | sort %}
+<div class="tag-cloud">{% for t in tags %}<a href="#{{ t[0] | slugify }}">#{{ t[0] }} <small>{{ t[1].size }}</small></a>{% endfor %}</div>
 {% for t in tags %}
 <section class="tag-group" id="{{ t[0] | slugify }}">
   <h2>#{{ t[0] }}</h2>
   <ul>
     {% for p in t[1] %}
-    <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a><time>{{ p.date | date: '%d/%m/%Y' }}</time></li>
+    <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a><time>{{ p.date | date: '%Y.%m.%d' }}</time></li>
     {% endfor %}
   </ul>
 </section>

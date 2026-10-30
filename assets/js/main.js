@@ -9,44 +9,99 @@
     localStorage.setItem('theme', next);
   });
 
-  // ---- filtro por tag na home ----
-  var chips = document.querySelectorAll('.chip');
-  chips.forEach(function (chip) {
-    chip.addEventListener('click', function () {
-      var f = chip.dataset.filter;
-      chips.forEach(function (c) { c.classList.toggle('active', c === chip); });
-      var visible = 0;
-      document.querySelectorAll('.list .row').forEach(function (row) {
-        var tags = (row.dataset.tags || '').split(' ');
-        row.hidden = f !== '*' && tags.indexOf(f) === -1;
-        if (!row.hidden) visible++;
-      });
-      var empty = document.querySelector('.list .empty');
-      if (empty) empty.hidden = visible > 0;
+  // ---- menu lateral no mobile ----
+  var menuBtn = document.querySelector('.menu-toggle');
+  var backdrop = document.querySelector('.backdrop');
+  function setMenu(open) {
+    document.body.classList.toggle('nav-open', open);
+    menuBtn.setAttribute('aria-expanded', open);
+    backdrop.hidden = !open;
+  }
+  if (menuBtn) {
+    menuBtn.addEventListener('click', function () { setMenu(!document.body.classList.contains('nav-open')); });
+    backdrop.addEventListener('click', function () { setMenu(false); });
+    addEventListener('keydown', function (e) { if (e.key === 'Escape') setMenu(false); });
+  }
+
+  // ---- busca (índice gerado em /search.json) ----
+  var input = document.getElementById('search');
+  var results = document.getElementById('search-results');
+  var index = null;
+  function loadIndex() {
+    if (index) return Promise.resolve(index);
+    return fetch(input.dataset.index)
+      .then(function (r) { return r.json(); })
+      .then(function (data) { index = data; return data; });
+  }
+  function norm(s) { return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  function render(items, q) {
+    results.innerHTML = '';
+    if (!items.length) {
+      results.innerHTML = '<p class="search-empty">Nada encontrado.</p>';
+    }
+    items.slice(0, 8).forEach(function (it) {
+      var a = document.createElement('a');
+      a.href = it.url;
+      var kind = document.createElement('small');
+      kind.textContent = it.kind;
+      var title = document.createElement('span');
+      title.textContent = it.title;
+      a.appendChild(kind);
+      a.appendChild(title);
+      results.appendChild(a);
     });
-  });
+    results.hidden = !q;
+  }
+  if (input) {
+    input.addEventListener('focus', loadIndex, { once: true });
+    input.addEventListener('input', function () {
+      var q = norm(input.value.trim());
+      if (!q) { results.hidden = true; return; }
+      loadIndex().then(function (data) {
+        var terms = q.split(/\s+/);
+        var hits = data.map(function (d) {
+          var t = norm(d.title), body = norm(d.text);
+          var ok = terms.every(function (w) { return t.indexOf(w) > -1 || body.indexOf(w) > -1; });
+          if (!ok) return null;
+          var score = terms.reduce(function (s, w) { return s + (t.indexOf(w) > -1 ? 10 : 1); }, 0);
+          return { d: d, score: score };
+        }).filter(Boolean).sort(function (a, b) { return b.score - a.score; });
+        render(hits.map(function (h) { return h.d; }), q);
+      });
+    });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { var first = results.querySelector('a'); if (first) location.href = first.href; }
+      if (e.key === 'Escape') { input.value = ''; results.hidden = true; input.blur(); }
+    });
+    // atalho "/" para focar a busca
+    addEventListener('keydown', function (e) {
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        if (window.innerWidth < 860) setMenu(true);
+        input.focus();
+      }
+    });
+  }
 
   // ---- blocos de código: rótulo da linguagem + botão copiar ----
   document.querySelectorAll('.prose div.highlighter-rouge').forEach(function (block) {
     var lang = (block.className.match(/language-(\S+)/) || [])[1];
-    if (lang && lang !== 'plaintext') {
-      var label = document.createElement('span');
-      label.className = 'code-lang';
-      label.textContent = lang;
-      block.appendChild(label);
-    }
+    var bar = document.createElement('div');
+    bar.className = 'code-bar';
+    var label = document.createElement('span');
+    label.textContent = lang && lang !== 'plaintext' && lang !== 'text' ? lang : '';
     var btn = document.createElement('button');
-    btn.className = 'copy-btn';
     btn.type = 'button';
-    btn.textContent = 'copiar';
+    btn.textContent = 'Copiar';
     btn.addEventListener('click', function () {
       navigator.clipboard.writeText(block.querySelector('code').innerText).then(function () {
-        btn.textContent = 'copiado ✓';
-        btn.classList.add('ok');
-        setTimeout(function () { btn.textContent = 'copiar'; btn.classList.remove('ok'); }, 1600);
+        btn.textContent = 'Copiado';
+        setTimeout(function () { btn.textContent = 'Copiar'; }, 1500);
       });
     });
-    block.appendChild(btn);
+    bar.appendChild(label);
+    bar.appendChild(btn);
+    block.insertBefore(bar, block.firstChild);
   });
 
   // ---- sumário (TOC) gerado a partir dos h2/h3 ----
@@ -54,7 +109,7 @@
   var headings = document.querySelectorAll('.prose h2[id], .prose h3[id]');
   if (toc) {
     if (headings.length < 2) {
-      toc.closest('.toc').style.visibility = 'hidden';
+      toc.closest('.toc').hidden = true;
     } else {
       headings.forEach(function (h) {
         var a = document.createElement('a');
@@ -69,19 +124,8 @@
           if (!e.isIntersecting) return;
           links.forEach(function (l) { l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id); });
         });
-      }, { rootMargin: '-80px 0px -70% 0px' });
+      }, { rootMargin: '-70px 0px -70% 0px' });
       headings.forEach(function (h) { spy.observe(h); });
     }
-  }
-
-  // ---- barra de progresso de leitura ----
-  var bar = document.querySelector('.progress span');
-  if (bar) {
-    var update = function () {
-      var max = document.body.scrollHeight - innerHeight;
-      bar.style.width = (max > 0 ? (scrollY / max) * 100 : 0) + '%';
-    };
-    addEventListener('scroll', update, { passive: true });
-    update();
   }
 })();

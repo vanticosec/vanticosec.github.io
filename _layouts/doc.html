@@ -1,0 +1,33 @@
+---
+layout: default
+---
+{%- assign parts = page.url | split: '/' -%}
+{%- assign section_url = '/' | append: parts[1] | append: '/' | append: parts[2] | append: '/' -%}
+{%- assign section = site.wiki | where: "url", section_url | first -%}
+{%- assign children = '' | split: '' -%}
+{%- if parts.size == 3 -%}
+  {%- assign sorted = site.wiki | sort: "order" -%}
+  {%- for d in sorted -%}{%- if d.url != page.url and d.url contains page.url -%}{%- assign children = children | push: d -%}{%- endif -%}{%- endfor -%}
+{%- endif -%}
+<div class="content-grid">
+  <article class="doc">
+    <nav class="crumbs">
+      <a href="{{ '/wiki/' | relative_url }}">Wiki</a>
+      {% if section and section.url != page.url %}<span>/</span><a href="{{ section.url | relative_url }}">{{ section.title }}</a>{% endif %}
+    </nav>
+    <h1>{{ page.title }}</h1>
+    {% if page.description %}<p class="lead">{{ page.description }}</p>{% endif %}
+    <div class="prose">
+      {{ content }}
+
+      {% if children.size > 0 %}
+      <h2 id="paginas">Páginas</h2>
+      <ul class="index-list">
+        {% for d in children %}<li><a href="{{ d.url | relative_url }}">{{ d.title }}</a>{% if d.description %}<span>{{ d.description }}</span>{% endif %}</li>{% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    {% if page.last_modified_at %}<p class="meta updated">Atualizado em {{ page.last_modified_at | date: '%d/%m/%Y' }}</p>{% endif %}
+  </article>
+  {% include toc.html %}
+</div>

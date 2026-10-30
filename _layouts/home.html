@@ -1,96 +1,29 @@
 ---
 layout: default
 ---
-{%- assign latest = site.posts.first -%}
-{%- assign all_tags = site.tags | sort -%}
-{%- assign all_cats = site.categories | sort -%}
-<section class="hero">
-  <div class="grid-bg" aria-hidden="true"></div>
-  <div class="glow" aria-hidden="true"></div>
-  <div class="container hero-inner">
-    <div class="hero-copy">
-      <span class="label"><span class="dot"></span> vantico // engenharia &amp; pesquisa</span>
-      <h1>Pesquisa e engenharia de <span class="grad">especialistas em segurança ofensiva</span>.</h1>
-      <p class="lead">{{ site.description }}</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#arquivo">Ler artigos <span aria-hidden="true">↓</span></a>
-        <a class="btn btn-ghost" href="{{ '/feed.xml' | relative_url }}">Assinar RSS</a>
-      </div>
-      <dl class="stats">
-        <div><dt>artigos</dt><dd>{{ site.posts.size | prepend: '0' | slice: -2, 2 }}</dd></div>
-        <div><dt>tags</dt><dd>{{ all_tags.size | prepend: '0' | slice: -2, 2 }}</dd></div>
-        <div><dt>áreas</dt><dd>{{ all_cats.size | prepend: '0' | slice: -2, 2 }}</dd></div>
-      </dl>
-    </div>
+{%- assign wiki_docs = site.wiki | sort: "order" -%}
+<div class="home">
+  <h1>{{ site.title }}</h1>
+  <p class="lead">{{ site.description }}</p>
 
-    <div class="terminal" aria-hidden="true">
-      <div class="term-bar"><i></i><i></i><i></i><span>root@vantico: ~/tech</span></div>
-      <pre class="term-body"><span class="p">$</span> whoami
-vantico-tech
-<span class="p">$</span> ls -lt artigos/ | head -{{ site.posts.size | at_most: 5 }}
-{% for post in site.posts limit: 5 %}<span class="d">{{ post.date | date: '%Y-%m-%d' }}</span>  {{ post.slug | truncate: 34 }}
-{% endfor %}<span class="p">$</span> cat ultimo.md | grep title
-<span class="s">"{{ latest.title | truncate: 46 }}"</span>
-<span class="p">$</span> <span class="cursor"></span></pre>
-    </div>
-  </div>
-</section>
+  <section>
+    <div class="home-head"><h2>Artigos recentes</h2><a href="{{ '/artigos/' | relative_url }}">Ver todos</a></div>
+    <ul class="post-list">
+      {% for p in site.posts limit: 5 %}
+      <li>
+        <time datetime="{{ p.date | date_to_xmlschema }}">{{ p.date | date: '%d/%m/%Y' }}</time>
+        <div>
+          <a href="{{ p.url | relative_url }}">{{ p.title }}</a>
+          {% if p.description %}<p>{{ p.description }}</p>{% endif %}
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
 
-{% if latest %}
-{%- assign a = site.authors[latest.author] -%}
-{%- assign words = latest.content | number_of_words -%}
-<section class="container section">
-  <header class="section-head"><span class="num">01</span><h2>Última publicação</h2><span class="line"></span></header>
-  <a class="featured" href="{{ latest.url | relative_url }}">
-    <div class="featured-cover" aria-hidden="true">
-      <div class="grid-bg"></div>
-      <span class="cover-cat">{{ latest.category | default: 'artigo' }}</span>
-      <span class="cover-glyph">&lt;/&gt;</span>
-      <span class="cover-id">ID: {{ latest.date | date: '%Y%m%d' }}-{{ latest.slug | size }}</span>
-    </div>
-    <div class="featured-body">
-      <div class="meta">
-        {% if latest.category %}<span class="kicker">{{ latest.category }}</span>{% endif %}
-        <time datetime="{{ latest.date | date_to_xmlschema }}">{{ latest.date | date: '%d.%m.%Y' }}</time>
-        <span>{{ words | divided_by: 200 | plus: 1 }} min de leitura</span>
-      </div>
-      <h3>{{ latest.title }}</h3>
-      {% if latest.description %}<p>{{ latest.description }}</p>{% endif %}
-      <div class="featured-foot">
-        <span class="author"><span class="avatar">{{ a.name | default: latest.author | slice: 0 }}</span>{{ a.name | default: latest.author }}</span>
-        <span class="read">ler artigo ↗</span>
-      </div>
-    </div>
-  </a>
-</section>
-{% endif %}
-
-<section class="container section" id="arquivo">
-  <header class="section-head"><span class="num">02</span><h2>Arquivo</h2><span class="line"></span></header>
-  <div class="filters" role="toolbar" aria-label="Filtrar por tag">
-    <button class="chip active" data-filter="*">todos</button>
-    {% for t in all_tags %}<button class="chip" data-filter="{{ t[0] | downcase }}">#{{ t[0] }}</button>{% endfor %}
-  </div>
-  <div class="list">
-    {% for post in site.posts %}
-      {% include post-card.html post=post index=forloop.index %}
-    {% endfor %}
-    <p class="empty" hidden>Nenhum artigo com essa tag.</p>
-  </div>
-</section>
-
-{% if all_cats.size > 0 %}
-<section class="container section">
-  <header class="section-head"><span class="num">03</span><h2>Áreas</h2><span class="line"></span></header>
-  <div class="matrix">
-    {% for c in all_cats %}
-    <a class="cell" href="{{ c[1].first.url | relative_url }}">
-      <span class="cell-count">{{ c[1].size | prepend: '0' | slice: -2, 2 }}</span>
-      <span class="cell-name">{{ c[0] }}</span>
-      <span class="cell-arrow" aria-hidden="true">→</span>
-    </a>
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
-{{ content }}
+  <section>
+    <div class="home-head"><h2>Wiki</h2><a href="{{ '/wiki/' | relative_url }}">Abrir wiki</a></div>
+    {% include wiki-index.html %}
+  </section>
+  {{ content }}
+</div>

@@ -3,47 +3,22 @@ layout: default
 ---
 {%- assign a = site.authors[page.author] -%}
 {%- assign words = content | number_of_words -%}
-<div class="progress" aria-hidden="true"><span></span></div>
+<div class="content-grid">
+  <article class="doc">
+    <nav class="crumbs"><a href="{{ '/artigos/' | relative_url }}">Artigos</a>{% if page.category %}<span>/</span>{{ page.category }}{% endif %}</nav>
+    <h1>{{ page.title }}</h1>
+    {% if page.description %}<p class="lead">{{ page.description }}</p>{% endif %}
+    <p class="meta">
+      {{ a.name | default: page.author }} ·
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%d/%m/%Y' }}</time> ·
+      {{ words | divided_by: 200 | plus: 1 }} min de leitura
+    </p>
+    <div class="prose">{{ content }}</div>
 
-<article class="post">
-  <header class="post-header">
-    <div class="grid-bg" aria-hidden="true"></div>
-    <div class="glow" aria-hidden="true"></div>
-    <div class="container narrow">
-      <a class="back" href="{{ '/' | relative_url }}">cd ../artigos</a>
-      <div class="meta">
-        {% if page.category %}<span class="kicker">{{ page.category }}</span>{% endif %}
-        <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%d.%m.%Y' }}</time>
-        <span>{{ words | divided_by: 200 | plus: 1 }} min de leitura</span>
-      </div>
-      <h1>{{ page.title }}</h1>
-      {% if page.description %}<p class="lead">{{ page.description }}</p>{% endif %}
-      <div class="byline">
-        <div class="avatar">{{ a.name | default: page.author | slice: 0 }}</div>
-        <div>
-          <strong>{{ a.name | default: page.author }}</strong>
-          {% if a.role %}<div class="muted">{{ a.role }}</div>{% endif %}
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="container post-layout">
-    <aside class="toc" aria-label="Sumário">
-      <p class="label">// neste artigo</p>
-      <nav id="toc"></nav>
-    </aside>
-    <div class="prose">
-      {{ content }}
-
-      {% if page.tags.size > 0 %}
-      <ul class="tags post-tags">{% for t in page.tags %}<li><a href="{{ '/tags/' | relative_url }}#{{ t | slugify }}">#{{ t }}</a></li>{% endfor %}</ul>
-      {% endif %}
-
-      <nav class="post-nav">
-        {% if page.previous %}<a class="prev" href="{{ page.previous.url | relative_url }}"><small>← anterior</small>{{ page.previous.title }}</a>{% else %}<span></span>{% endif %}
-        {% if page.next %}<a class="next" href="{{ page.next.url | relative_url }}"><small>próximo →</small>{{ page.next.title }}</a>{% endif %}
-      </nav>
-    </div>
-  </div>
-</article>
+    <nav class="pager">
+      {% if page.previous %}<a class="prev" href="{{ page.previous.url | relative_url }}"><small>Anterior</small>{{ page.previous.title }}</a>{% else %}<span></span>{% endif %}
+      {% if page.next %}<a class="next" href="{{ page.next.url | relative_url }}"><small>Próximo</small>{{ page.next.title }}</a>{% endif %}
+    </nav>
+  </article>
+  {% include toc.html %}
+</div>

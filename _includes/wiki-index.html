@@ -1,0 +1,16 @@
+{%- assign wiki_docs = site.wiki | sort: "order" -%}
+<div class="wiki-index">
+  {% for s in wiki_docs %}
+  {%- assign depth = s.url | split: '/' | size -%}
+  {%- if depth != 3 -%}{%- continue -%}{%- endif -%}
+  <div class="wiki-section">
+    <h3><a href="{{ s.url | relative_url }}">{{ s.title }}</a></h3>
+    {% if s.description %}<p>{{ s.description }}</p>{% endif %}
+    <ul>
+      {% for d in wiki_docs %}{% if d.url != s.url and d.url contains s.url %}
+      <li><a href="{{ d.url | relative_url }}">{{ d.title }}</a></li>
+      {% endif %}{% endfor %}
+    </ul>
+  </div>
+  {% endfor %}
+</div>

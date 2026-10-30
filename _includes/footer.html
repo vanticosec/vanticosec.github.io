@@ -1,41 +1,6 @@
-<section class="cta-band">
-  <div class="container cta-inner">
-    <div>
-      <span class="label">// segurança ofensiva</span>
-      <h2>Quer saber como um atacante veria a sua empresa?</h2>
-      <p class="muted">Pentest, Red Team e Security Review feitos por especialistas em segurança ofensiva.</p>
-    </div>
-    <a class="btn btn-primary" href="{{ site.company_url }}" target="_blank" rel="noopener">Falar com a Vantico <span aria-hidden="true">→</span></a>
-  </div>
-</section>
-
 <footer class="site-footer">
-  <div class="container footer-grid">
-    <div class="footer-brand">
-      <a class="brand" href="{{ '/' | relative_url }}">
-        <img src="{{ site.logo | relative_url }}" alt="" width="26" height="26">
-        <span class="brand-name">vantico<span class="brand-sep">/</span><strong>tech</strong></span>
-      </a>
-      <p class="muted">{{ site.tagline }}</p>
-    </div>
-    <div class="footer-col">
-      <span class="label">navegar</span>
-      <a href="{{ '/' | relative_url }}">Artigos</a>
-      <a href="{{ '/tags/' | relative_url }}">Tags</a>
-      <a href="{{ '/sobre/' | relative_url }}">Sobre</a>
-      <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
-    </div>
-    <div class="footer-col">
-      <span class="label">vantico</span>
-      <a href="{{ site.company_url }}" target="_blank" rel="noopener">vantico.com.br</a>
-      {% if site.social.github %}<a href="https://github.com/{{ site.social.github }}" target="_blank" rel="noopener">GitHub</a>{% endif %}
-      {% if site.social.linkedin %}<a href="https://www.linkedin.com/{{ site.social.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>{% endif %}
-      {% if site.social.instagram %}<a href="https://www.instagram.com/{{ site.social.instagram }}" target="_blank" rel="noopener">Instagram</a>{% endif %}
-      {% if site.social.youtube %}<a href="https://www.youtube.com/{{ site.social.youtube }}" target="_blank" rel="noopener">YouTube</a>{% endif %}
-    </div>
-  </div>
-  <div class="container copyright">
-    <span>© {{ 'now' | date: '%Y' }} Vantico — Especialistas em Segurança Ofensiva</span>
-    <span class="mono">status: <span class="ok">● online</span></span>
-  </div>
+  <span>© {{ 'now' | date: '%Y' }} <a href="{{ site.company_url }}" target="_blank" rel="noopener">Vantico</a> · Especialistas em Segurança Ofensiva</span>
+  {% if page.path and site.repository %}
+  <a href="https://github.com/{{ site.repository }}/edit/main/{{ page.path }}" target="_blank" rel="noopener">Editar esta página</a>
+  {% endif %}
 </footer>

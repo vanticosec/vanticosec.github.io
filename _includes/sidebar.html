@@ -1,0 +1,41 @@
+{%- assign wiki_docs = site.wiki | sort: "order" -%}
+<aside class="sidebar" id="sidebar">
+  <div class="search">
+    <input id="search" type="search" placeholder="Buscar…" autocomplete="off" aria-label="Buscar no site" data-index="{{ '/search.json' | relative_url }}">
+    <div id="search-results" class="search-results" hidden></div>
+  </div>
+
+  <nav class="side-nav" aria-label="Conteúdo">
+    <p class="side-title"><a href="{{ '/artigos/' | relative_url }}">Artigos</a></p>
+    <ul>
+      {% for p in site.posts limit: 6 %}
+      <li><a href="{{ p.url | relative_url }}" {% if page.url == p.url %}class="active"{% endif %}>{{ p.title }}</a></li>
+      {% endfor %}
+      {% if site.posts.size > 6 %}<li><a class="more" href="{{ '/artigos/' | relative_url }}">Todos os artigos</a></li>{% endif %}
+    </ul>
+
+    <p class="side-title"><a href="{{ '/wiki/' | relative_url }}">Wiki</a></p>
+    <ul>
+      {% for s in wiki_docs %}
+      {%- assign depth = s.url | split: '/' | size -%}
+      {%- if depth != 3 -%}{%- continue -%}{%- endif -%}
+      <li>
+        <details {% if page.url contains s.url %}open{% endif %}>
+          <summary><a href="{{ s.url | relative_url }}" {% if page.url == s.url %}class="active"{% endif %}>{{ s.title }}</a></summary>
+          <ul>
+            {% for d in wiki_docs %}{% if d.url != s.url and d.url contains s.url %}
+            <li><a href="{{ d.url | relative_url }}" {% if page.url == d.url %}class="active"{% endif %}>{{ d.title }}</a></li>
+            {% endif %}{% endfor %}
+          </ul>
+        </details>
+      </li>
+      {% endfor %}
+    </ul>
+  </nav>
+
+  <div class="side-foot">
+    {% if site.social.github %}<a href="https://github.com/{{ site.social.github }}" target="_blank" rel="noopener">GitHub</a>{% endif %}
+    {% if site.social.linkedin %}<a href="https://www.linkedin.com/{{ site.social.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>{% endif %}
+    <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+  </div>
+</aside>

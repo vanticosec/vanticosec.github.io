@@ -2,10 +2,10 @@
 #  Vantico Tech — configuração do site
 # ---------------------------------------------------------------
 title: Vantico Tech
-tagline: Artigos técnicos, técnicas e aprendizados do time Vantico
+tagline: Artigos e wiki de segurança ofensiva da Vantico
 description: >-
-  Blog técnico da Vantico. Arquitetura, infraestrutura, desenvolvimento
-  e as técnicas que usamos no dia a dia.
+  Artigos técnicos e uma wiki de referência mantidos pelo time da Vantico,
+  especialistas em segurança ofensiva.
 lang: pt-BR
 timezone: America/Sao_Paulo
 
@@ -15,6 +15,7 @@ url: "https://vanticosec.github.io"
 baseurl: ""
 
 company_url: https://vantico.com.br
+repository: vanticosec/vanticosec.github.io   # usado no link "Editar esta página"
 logo: /assets/img/logo.svg
 
 social:
@@ -34,6 +35,12 @@ authors:
     role: Engenharia
 
 permalink: /:year/:month/:title/
+
+# Wiki — cada pasta em _wiki/ é uma seção (veja o README)
+collections:
+  wiki:
+    output: true
+    permalink: /wiki/:path/
 markdown: kramdown
 highlighter: rouge
 kramdown:
@@ -51,6 +58,9 @@ defaults:
     values:
       layout: post
       author: equipe
+  - scope: { path: "", type: wiki }
+    values:
+      layout: doc
   - scope: { path: "" }
     values:
       layout: page

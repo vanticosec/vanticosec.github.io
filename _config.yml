@@ -1,0 +1,60 @@
+# ---------------------------------------------------------------
+#  Vantico Tech — configuração do site
+# ---------------------------------------------------------------
+title: Vantico Tech
+tagline: Artigos técnicos, técnicas e aprendizados do time Vantico
+description: >-
+  Blog técnico da Vantico. Arquitetura, infraestrutura, desenvolvimento
+  e as técnicas que usamos no dia a dia.
+lang: pt-BR
+timezone: America/Sao_Paulo
+
+# Se usar domínio próprio (ex.: tech.vantico.com.br), deixe baseurl vazio
+# e crie o arquivo CNAME. Se usar <usuario>.github.io/<repo>, ponha "/<repo>".
+url: "https://tech.vantico.com.br"
+baseurl: ""
+
+company_url: https://vantico.com.br
+logo: /assets/img/logo.svg
+
+social:
+  github: vantico
+  linkedin: company/vantico
+
+# Autores — referencie em cada post com `author: <chave>`
+authors:
+  kaique:
+    name: Kaique Bonato
+    role: Engenharia
+    github: kaiquebonato
+  equipe:
+    name: Time Vantico
+    role: Engenharia
+
+permalink: /:year/:month/:title/
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  toc_levels: 2..3
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+defaults:
+  - scope: { path: "", type: posts }
+    values:
+      layout: post
+      author: equipe
+  - scope: { path: "" }
+    values:
+      layout: page
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor

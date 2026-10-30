@@ -1,0 +1,25 @@
+---
+layout: default
+---
+<section class="hero">
+  <div class="container">
+    <span class="eyebrow"><span class="dot"></span> Engenharia na Vantico</span>
+    <h1>{{ site.tagline }}</h1>
+    <p class="lead">{{ site.description }}</p>
+  </div>
+</section>
+
+<section class="container">
+  {%- assign all_tags = site.tags | sort -%}
+  <div class="filters" role="toolbar" aria-label="Filtrar por tag">
+    <button class="chip active" data-filter="*">Todos</button>
+    {% for t in all_tags %}<button class="chip" data-filter="{{ t[0] | downcase }}">#{{ t[0] }}</button>{% endfor %}
+  </div>
+
+  <div class="grid">
+    {% for post in site.posts %}
+      {% include post-card.html post=post featured=forloop.first %}
+    {% endfor %}
+  </div>
+  {{ content }}
+</section>

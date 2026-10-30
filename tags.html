@@ -1,0 +1,15 @@
+---
+title: Tags
+permalink: /tags/
+---
+{% assign tags = site.tags | sort %}
+{% for t in tags %}
+<section class="tag-group" id="{{ t[0] | slugify }}">
+  <h2>#{{ t[0] }}</h2>
+  <ul>
+    {% for p in t[1] %}
+    <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a><time>{{ p.date | date: '%d/%m/%Y' }}</time></li>
+    {% endfor %}
+  </ul>
+</section>
+{% endfor %}

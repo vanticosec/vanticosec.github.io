@@ -1,0 +1,18 @@
+{%- assign p = include.post -%}
+{%- assign a = site.authors[p.author] -%}
+{%- assign words = p.content | number_of_words -%}
+<article class="card{% if include.featured %} card--featured{% endif %}" data-tags="{{ p.tags | join: ' ' | downcase }}">
+  {% if p.category %}<span class="kicker">{{ p.category }}</span>{% endif %}
+  <h2 class="card-title"><a href="{{ p.url | relative_url }}">{{ p.title }}</a></h2>
+  {% if p.description %}<p class="card-desc">{{ p.description }}</p>{% endif %}
+  <div class="meta">
+    <span>{{ a.name | default: p.author }}</span>
+    <span>·</span>
+    <time datetime="{{ p.date | date_to_xmlschema }}">{{ p.date | date: '%d/%m/%Y' }}</time>
+    <span>·</span>
+    <span>{{ words | divided_by: 200 | plus: 1 }} min de leitura</span>
+  </div>
+  {% if p.tags.size > 0 %}
+  <ul class="tags">{% for t in p.tags %}<li><a href="{{ '/tags/' | relative_url }}#{{ t | slugify }}">#{{ t }}</a></li>{% endfor %}</ul>
+  {% endif %}
+</article>

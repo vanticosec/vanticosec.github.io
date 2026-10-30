@@ -1,0 +1,18 @@
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <a class="brand" href="{{ '/' | relative_url }}">
+        <img src="{{ site.logo | relative_url }}" alt="" width="24" height="24">
+        <span>Vantico<strong>Tech</strong></span>
+      </a>
+      <p class="muted">{{ site.tagline }}</p>
+    </div>
+    <div class="footer-links">
+      <a href="{{ site.company_url }}" target="_blank" rel="noopener">vantico.com.br</a>
+      {% if site.social.github %}<a href="https://github.com/{{ site.social.github }}" target="_blank" rel="noopener">GitHub</a>{% endif %}
+      {% if site.social.linkedin %}<a href="https://www.linkedin.com/{{ site.social.linkedin }}" target="_blank" rel="noopener">LinkedIn</a>{% endif %}
+      <a href="{{ '/feed.xml' | relative_url }}">RSS</a>
+    </div>
+  </div>
+  <div class="container copyright muted">© {{ 'now' | date: '%Y' }} Vantico. Conteúdo técnico compartilhado com a comunidade.</div>
+</footer>

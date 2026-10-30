@@ -9,9 +9,9 @@ description: >-
 lang: pt-BR
 timezone: America/Sao_Paulo
 
-# Se usar domínio próprio (ex.: tech.vantico.com.br), deixe baseurl vazio
-# e crie o arquivo CNAME. Se usar <usuario>.github.io/<repo>, ponha "/<repo>".
-url: "https://tech.vantico.com.br"
+# Repo vanticosec/vanticosec.github.io → servido na raiz, baseurl vazio.
+# Se o repo tiver outro nome (<org>.github.io/<repo>), ponha "/<repo>".
+url: "https://vanticosec.github.io"
 baseurl: ""
 
 company_url: https://vantico.com.br

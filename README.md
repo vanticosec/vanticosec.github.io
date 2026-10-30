@@ -33,12 +33,16 @@ bundle exec jekyll serve --livereload
 
 ## Publicar no GitHub Pages
 
-1. Crie um repositório (ex.: `vantico/tech-blog`) e faça push deste conteúdo.
-2. Em **Settings → Pages**, escolha *Deploy from a branch* → `main` / `/ (root)`.
-3. **Domínio próprio:** o arquivo `CNAME` já aponta para `tech.vantico.com.br`.
-   Crie no DNS um registro `CNAME tech → vantico.github.io` e marque *Enforce HTTPS*.
-   - Sem domínio próprio? Apague o `CNAME` e em `_config.yml` use
-     `url: https://vantico.github.io` e `baseurl: /tech-blog`.
+O site é publicado em https://vanticosec.github.io a partir do repositório
+`vanticosec/vanticosec.github.io` (o nome `<org>.github.io` faz o Pages servir na raiz).
+
+1. Em **Settings → Pages**, escolha *Deploy from a branch* → `main` / `/ (root)`.
+2. Em `_config.yml`: `url: https://vanticosec.github.io` e `baseurl: ""`.
+   - Se o repositório tiver outro nome (ex.: `vanticosec/blog`), o site fica em
+     `vanticosec.github.io/blog/` e é preciso usar `baseurl: /blog`.
+3. **Domínio próprio (opcional):** crie um arquivo `CNAME` com o domínio
+   (ex.: `tech.vantico.com.br`), aponte no DNS `CNAME tech → vanticosec.github.io`
+   e marque *Enforce HTTPS*. Atualize `url` no `_config.yml`.
 
 ## Personalizar o visual
 
